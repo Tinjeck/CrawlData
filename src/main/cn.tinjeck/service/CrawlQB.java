@@ -2,6 +2,7 @@ package service;
 
 import Http.HttpClientHelper;
 import com.alibaba.fastjson.JSON;
+import constant.ConstantPara;
 import jdbc.JDBCBase;
 import vo.Result;
 
@@ -26,8 +27,8 @@ public class CrawlQB {
          * 这里除了日期，其他的可以不动
          */
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date start_date = dateFormat.parse("2016-01-01");
-        Date end_date= dateFormat.parse("2016-05-01");
+        Date start_date = dateFormat.parse(ConstantPara.STARTDATE);
+        Date end_date= dateFormat.parse(ConstantPara.ENDDATE);
         String coin_type = "0";
         int page_no = 1;
         String channel = "qdqb";
@@ -35,7 +36,7 @@ public class CrawlQB {
         String extcode = "";
         String t = "0.2841945974201854";
 
-        Long intervalTime = 1000l*60*60*24*30*4; //查询间隔,一次查询最大6个月
+        Long intervalTime = 1000l*60*60*24*30*ConstantPara.INTERVALTIME; //查询间隔,一次查询最大6个月 默认4个月
         Date nowTime = new Date(); //查询截止时间，可以自定义，默认为当前时间
 //        Date nowTime = dateFormat.parse("2009-05-01");
 
@@ -45,7 +46,7 @@ public class CrawlQB {
         while (true){
             sTime.add(dateFormat.format(start_date));
             eTime.add(dateFormat.format(end_date));
-            start_date.setTime(start_date.getTime()+intervalTime);
+            start_date.setTime(end_date.getTime()+1000l*60*60*24);
             end_date.setTime(end_date.getTime()+intervalTime);
             if(!nowTime.after(end_date)){
                 break;
