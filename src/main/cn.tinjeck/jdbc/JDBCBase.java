@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.List;
 
 public class JDBCBase {
+
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/hu";
     // MySQL 8.0 以上版本 - JDBC 驱动名及数据库 URL

@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 public class CrawlQB {
-    public static void main(String[] args) throws Exception {
+    public void saveCrawlQb() throws Exception {
         Date beginTime = new Date();
 
         HttpClientHelper httpClient = new HttpClientHelper();
