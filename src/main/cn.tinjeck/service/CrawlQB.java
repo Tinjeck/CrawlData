@@ -6,12 +6,9 @@ import constant.ConstantPara;
 import jdbc.JDBCBase;
 import vo.Result;
 
-import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -59,18 +56,26 @@ public class CrawlQB {
             String url = ("https://my.pay.qq.com/cgi-bin/personal/account_tradeinfo.cgi?coin_type="+coin_type+"&start_date="+sTime.get(i)+"&end_date="+eTime.get(i)+"&page_no="+page_no+"&channel="+channel+"&per="+per+"&extcode="+extcode+"&t="+t);
             String res = httpClient.sendGet(url);
             Result resultinfoVo = JSON.parseObject(res,Result.class);
-            System.out.println(resultinfoVo);
-            resultList.add(resultinfoVo);
-            while(page_no*per < resultinfoVo.getResultinfo().getCount()){
-                page_no++;
-                per = resultinfoVo.getResultinfo().getPer();
-                url = ("https://my.pay.qq.com/cgi-bin/personal/account_tradeinfo.cgi?coin_type="+coin_type+"&start_date="+sTime.get(i)+"&end_date="+eTime.get(i)+"&page_no="+page_no+"&channel="+channel+"&per="+per+"&extcode="+extcode+"&t="+t);
-                res = httpClient.sendGet(url);
-                resultinfoVo = JSON.parseObject(res,Result.class);
-                System.out.println(resultinfoVo);
+//            System.out.println(resultinfoVo);
+            if(resultinfoVo.getResultcode().equals("0")){
                 resultList.add(resultinfoVo);
+                while(page_no*per < resultinfoVo.getResultinfo().getCount()){
+                    page_no++;
+                    per = resultinfoVo.getResultinfo().getPer();
+                    url = ("https://my.pay.qq.com/cgi-bin/personal/account_tradeinfo.cgi?coin_type="+coin_type+"&start_date="+sTime.get(i)+"&end_date="+eTime.get(i)+"&page_no="+page_no+"&channel="+channel+"&per="+per+"&extcode="+extcode+"&t="+t);
+                    res = httpClient.sendGet(url);
+                    resultinfoVo = JSON.parseObject(res,Result.class);
+                    System.out.println(resultinfoVo);
+                    resultList.add(resultinfoVo);
+                }
+                page_no = 1;
+            }else if(resultinfoVo.getResultcode().equals("10012")){
+                System.out.println("请检查Cookie值是否正确填写！");
+                System.exit(0);
+            }else {
+                System.out.println(resultinfoVo.getResultinfo().getDisplay());
+                System.exit(0);
             }
-            page_no = 1;
         }
 
         JDBCBase jdbcTest = new JDBCBase();

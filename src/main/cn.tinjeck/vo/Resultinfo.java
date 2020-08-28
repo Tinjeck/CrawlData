@@ -10,8 +10,26 @@ public class Resultinfo {
     private float payqb;
     private int per;
     private float saveqb;
+    private String display;
     private List<Info> list = new ArrayList<Info>();
 
+    public void setDisplay(String display) {
+        this.display = display;
+    }
+
+    public String getDisplay() {
+        return display;
+    }
+
+    public Resultinfo(int count, int pageno, float payqb, int per, float saveqb, String display, List<Info> list) {
+        this.count = count;
+        this.pageno = pageno;
+        this.payqb = payqb;
+        this.per = per;
+        this.saveqb = saveqb;
+        this.display = display;
+        this.list = list;
+    }
 
     public Resultinfo() {
     }
